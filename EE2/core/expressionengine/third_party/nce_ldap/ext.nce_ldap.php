@@ -207,10 +207,12 @@ class Nce_ldap_ext {
 
 		// Multiple LDAP servers
 		$ldap_hosts = explode(',', $this->settings['ldap_host']);
-		foreach ($ldap_hosts as $ldap_host)
+		// Multiple LDAP search_base strings
+		$ldap_bases = explode('|', $this->settings['ldap_search_base']);
+		foreach ($ldap_hosts as $idx => $ldap_host)
 		{
 			$connection = $this->create_connection($ldap_host, $this->settings['ldap_port'], $this->settings['ldap_search_user'], $this->settings['ldap_search_password']);
-			$result = $this->authenticate_user($connection, $provided_username, $provided_password, $this->settings['ldap_username_attribute'], $this->settings['ldap_search_base']);
+			$result = $this->authenticate_user($connection, $provided_username, $provided_password, $this->settings['ldap_username_attribute'], $ldap_bases[$idx]);
 			if ($result['authenticated'])
 				break;
 		}
