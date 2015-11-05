@@ -243,7 +243,7 @@ class Nce_ldap_ext {
 	function sync_user_details($user_info)
 	{
 			// Sync EE password to match LDAP (if account exists)
-			$encrypted_password = $this->EE->functions->hash(stripslashes($user_info['password']));
+			$encrypted_password = hash('sha1', stripslashes($user_info['password']));
 			$sql = 'UPDATE exp_members SET password = \''.$this->EE->db->escape_str($encrypted_password).'\' WHERE username = \''.$this->EE->db->escape_str($user_info['username']).'\'';
 			$this->debug_print('Updating user with SQL: '.$sql);
 			$this->EE->db->query($sql);
@@ -280,7 +280,6 @@ class Nce_ldap_ext {
 			$data['join_date']        = $this->EE->localize->now;
 			$data['language']         = 'english';
 			$data['timezone']         = 'UTC';
-			$data['daylight_savings'] = 'n';
 			$data['time_format']      = 'eu';
 			$data['group_id']         = $this->settings['created_user_group'];
 
